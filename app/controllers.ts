@@ -18,6 +18,19 @@ class WeightsCtrl {
   };
 }
 
+class ExercisesCtrl {
+  public $inject = ['Exercises'];
+  exercises: Array<Services.IExerciseService>;
+  constructor(
+    public Exercises: Services.Exercise
+  ) {
+    this.exercises = Exercises.all();
+  }
+  remove(exercise) {
+    this.Exercises.remove(exercise);
+  };
+}
+
 interface IStateParams extends ng.ui.IStateParamsService {
   weightId: string;
 }
@@ -44,4 +57,5 @@ angular.module('starter.controllers', [])
   .controller('DashCtrl', DashCtrl)
   .controller('WeightsCtrl', WeightsCtrl)
   .controller('WeightDetailCtrl', WeightDetailCtrl)
+    .controller('ExercisesCtrl', ExercisesCtrl)
   .controller('SettingsCtrl', SettingsCtrl);
