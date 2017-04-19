@@ -13,7 +13,7 @@ module Services {
     face: String;
   }
 
-  export interface IExercise {
+  export interface IExerciseService {
     id: Number;
     name: String;
     workingWeight: Number;
@@ -28,7 +28,7 @@ module Services {
   export interface ISession {
     id: Number;
     date: Date;
-    exercises: Array<IExercise>;
+    exercises: Array<IExerciseService>;
   }
 
   export interface IUserSettings {
@@ -109,7 +109,7 @@ module Services {
     }
   }
 
-  export class Exercises implements IExercise {
+  export class Exercise implements IExerciseService {
   id: Number;
     name: String;
     workingWeight: Number;
@@ -119,7 +119,7 @@ module Services {
     maxWeight?: Number;
     maxReps?: Array<Number>;
     reps: Number;
-    exercises: Array<IExercise>;
+    exercises: Array<IExerciseService>;
      constructor(IUserSettings) {
        this.exercises = [
          {
@@ -217,5 +217,5 @@ module Services {
 
 angular.module('starter.services', [])
   .service('Settings', Services.UserSettings)
-    .service('Exercises', Services.Exercises)
+    .service('Exercises', Services.Exercise)
   .service('Weights', Services.Weights);
