@@ -3,7 +3,7 @@ module Services {
   export interface IWeightsService {
     all(): Array<IWeightUser>;
     remove(weight: IWeightUser);
-    get(chatId: string);
+    get(weightId: string);
   }
 
   export interface IWeightUser {
@@ -13,7 +13,7 @@ module Services {
     face: String;
   }
 
-  export interface IExerciseService {
+  export interface IExercise {
     id: Number;
     name: String;
     workingWeight: Number;
@@ -25,10 +25,17 @@ module Services {
     reps: Number;
   }
 
+  export interface IExerciseService {
+    all(): Array<IExercise>;
+    remove(exercise: Exercise);
+    get(exerciseId: string);
+
+  }
+
   export interface ISession {
     id: Number;
     date: Date;
-    exercises: Array<IExerciseService>;
+    exercises: Array<IExercise>;
   }
 
   export interface IUserSettings {
@@ -43,23 +50,23 @@ module Services {
       this.weight = weight;
       this.enabled = enabled;
     }
-}  
+  }
   export class UserSettings implements IUserSettings {
-     restPerExercise: 180;
-      restPerSet: 90;
-       
+    restPerExercise: 180;
+    restPerSet: 90;
+
     availableWeights: Array<WeightValue>
-      constructor() {
-        this.availableWeights = [];
-        this.restPerExercise = 180;
-        this.restPerSet = 90;
-        let defaultWeightValues = [2.5, 5, 10, 15, 25, 35, 45];        
+    constructor() {
+      this.availableWeights = [];
+      this.restPerExercise = 180;
+      this.restPerSet = 90;
+      let defaultWeightValues = [2.5, 5, 10, 15, 25, 35, 45];
 
-        for (let val in defaultWeightValues) {
-          this.availableWeights.push(new WeightValue(defaultWeightValues[val], true));
-        }        
+      for (let val in defaultWeightValues) {
+        this.availableWeights.push(new WeightValue(defaultWeightValues[val], true));
+      }
 
-     }
+    }
   }
 
   export class Weights implements IWeightsService {
@@ -71,26 +78,26 @@ module Services {
         lastText: 'You on your way?',
         face: 'img/ben.png'
       }, {
-          id: 1,
-          name: 'Max Lynx',
-          lastText: 'Hey, it\'s me',
-          face: 'img/max.png'
-        }, {
-          id: 2,
-          name: 'Adam Bradleyson',
-          lastText: 'I should buy a boat',
-          face: 'img/adam.jpg'
-        }, {
-          id: 3,
-          name: 'Perry Governor',
-          lastText: 'Look at my mukluks!',
-          face: 'img/perry.png'
-        }, {
-          id: 4,
-          name: 'Mike Harrington',
-          lastText: 'This is wicked good ice cream.',
-          face: 'img/mike.png'
-        }];
+        id: 1,
+        name: 'Max Lynx',
+        lastText: 'Hey, it\'s me',
+        face: 'img/max.png'
+      }, {
+        id: 2,
+        name: 'Adam Bradleyson',
+        lastText: 'I should buy a boat',
+        face: 'img/adam.jpg'
+      }, {
+        id: 3,
+        name: 'Perry Governor',
+        lastText: 'Look at my mukluks!',
+        face: 'img/perry.png'
+      }, {
+        id: 4,
+        name: 'Mike Harrington',
+        lastText: 'This is wicked good ice cream.',
+        face: 'img/mike.png'
+      }];
     }
     all() {
       console.log(this.weights);
@@ -110,7 +117,7 @@ module Services {
   }
 
   export class Exercise implements IExerciseService {
-  id: Number;
+    id: Number;
     name: String;
     workingWeight: Number;
     warmupWeight?: Number;
@@ -119,81 +126,81 @@ module Services {
     maxWeight?: Number;
     maxReps?: Array<Number>;
     reps: Number;
-    exercises: Array<IExerciseService>;
-     constructor(IUserSettings) {
-       this.exercises = [
-         {
-     id: 0,
-    name: "Squat",
-    workingWeight: 10,
-    warmupWeight: 10,
-    workingSets: 5,
-    warmupSets: 0,
-    maxWeight: 10,
-    reps: 5
-      },
-      {
-     id: 1,
-    name: "Overhead Press",
-    workingWeight: 55,
-    warmupWeight: 45,
-    workingSets: 3,
-    warmupSets: 2,
-    maxWeight: 55,
-    reps: 5
-      },    {
-     id: 2,
-    name: "Deadlift",
-    workingWeight: 115,
-    warmupWeight: null,
-    workingSets: 1,
-    warmupSets: 0,
-    maxWeight: 110,
-    reps: 5
-      },    {
-     id: 3,
-    name: "Overhand Pullup",
-    workingWeight: 130,
-    warmupWeight: 0,
-    workingSets: 3,
-    warmupSets: 0,
-    maxWeight: null,
-    maxReps: [8,7,7],
-    reps: 3
-      },    {
-     id: 4,
-    name: "Underhand Pullup",
-    workingWeight: 130,
-    warmupWeight: 0,
-    workingSets: 3,
-    warmupSets: 0,
-    maxWeight: null,
-    maxReps: [8,7,7],
-    reps: 3
-      },
-     {
-     id: 5,
-    name: "Bench Press",
-    workingWeight: 70,
-    warmupWeight: 0,
-    workingSets: 3,
-    warmupSets: 2,
-    maxWeight: 70,
-    maxReps: null,
-    reps: 5
-      },
-  {
-     id: 6,
-    name: "Sit Ups",
-    workingWeight: 0,
-    warmupWeight: 0,
-    workingSets: 3,
-    warmupSets: 0,
-    maxWeight: 0,
-    maxReps: [11,7,4],
-    reps: 3
-      },
-      
+    exercises: Array<IExercise>;
+    constructor(IUserSettings) {
+      this.exercises = [
+        {
+          id: 0,
+          name: "Squat",
+          workingWeight: 10,
+          warmupWeight: 10,
+          workingSets: 5,
+          warmupSets: 0,
+          maxWeight: 10,
+          reps: 5
+        },
+        {
+          id: 1,
+          name: "Overhead Press",
+          workingWeight: 55,
+          warmupWeight: 45,
+          workingSets: 3,
+          warmupSets: 2,
+          maxWeight: 55,
+          reps: 5
+        }, {
+          id: 2,
+          name: "Deadlift",
+          workingWeight: 115,
+          warmupWeight: null,
+          workingSets: 1,
+          warmupSets: 0,
+          maxWeight: 110,
+          reps: 5
+        }, {
+          id: 3,
+          name: "Overhand Pullup",
+          workingWeight: 130,
+          warmupWeight: 0,
+          workingSets: 3,
+          warmupSets: 0,
+          maxWeight: null,
+          maxReps: [8, 7, 7],
+          reps: 3
+        }, {
+          id: 4,
+          name: "Underhand Pullup",
+          workingWeight: 130,
+          warmupWeight: 0,
+          workingSets: 3,
+          warmupSets: 0,
+          maxWeight: null,
+          maxReps: [8, 7, 7],
+          reps: 3
+        },
+        {
+          id: 5,
+          name: "Bench Press",
+          workingWeight: 70,
+          warmupWeight: 0,
+          workingSets: 3,
+          warmupSets: 2,
+          maxWeight: 70,
+          maxReps: null,
+          reps: 5
+        },
+        {
+          id: 6,
+          name: "Sit Ups",
+          workingWeight: 0,
+          warmupWeight: 0,
+          workingSets: 3,
+          warmupSets: 0,
+          maxWeight: 0,
+          maxReps: [11, 7, 4],
+          reps: 3
+        },
+
       ];
     }
     all() {
@@ -217,5 +224,5 @@ module Services {
 
 angular.module('starter.services', [])
   .service('Settings', Services.UserSettings)
-    .service('Exercises', Services.Exercise)
+  .service('Exercises', Services.Exercise)
   .service('Weights', Services.Weights);

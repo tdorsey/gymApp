@@ -80,8 +80,28 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       url: '/weights/:weightId',
       views: {
         'tab-weights': {
-          templateUrl: 'templates/detail.html',
+          templateUrl: 'templates/weight-detail.html',
           controller: 'WeightDetailCtrl as Detail'
+        }
+      }
+    })
+
+.state('tab.exercises', {
+      url: '/exercises',
+      views: {
+        'tab-exercises': {
+          templateUrl: 'templates/tab-exercises.html',
+          controller: 'ExercisesCtrl as Exercises'
+        },
+      }
+    })
+    .state('tab.exercise-detail', {
+      
+      url: '/exercises/:exerciseId',
+      views: {
+        'tab-exercises': {
+          templateUrl: 'templates/exercise-detail.html',
+          controller: 'ExerciseDetailCtrl as Detail'
         }
       }
     })

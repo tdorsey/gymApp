@@ -18,21 +18,35 @@ class WeightsCtrl {
   };
 }
 
-class ExercisesCtrl {
-  public $inject = ['Exercises'];
-  exercises: Array<Services.IExerciseService>;
-  constructor(
-    public Exercises: Services.Exercise
-  ) {
+
+
+interface IStateParams extends ng.ui.IStateParamsService {
+  weightId: string;
+  exerciseId: string;
+}
+
+class BaseCtrl {
+  public $inject = ['Settings'];
+  settings: Services.IUserSettings;
+  constructor(public readonly Settings: Services.IUserSettings) {
+    this.settings = Settings;
+  }
+}
+
+class ExercisesCtrl extends BaseCtrl {
+
+  static $inject = ["$scope", "Settings"];
+
+  exercises: Array<Services.IExercise>;
+  constructor($scope: ng.IScope, public Exercises: Services.Exercise, public Settings: Services.IUserSettings) {
+    super(Settings);
     this.exercises = Exercises.all();
+    this.settings = Settings;
+
   }
   remove(exercise) {
     this.Exercises.remove(exercise);
   };
-}
-
-interface IStateParams extends ng.ui.IStateParamsService {
-  weightId: string;
 }
 
 class WeightDetailCtrl {
@@ -46,6 +60,17 @@ class WeightDetailCtrl {
   }
 }
 
+class ExerciseDetailCtrl {
+  public $inject = ['Exercises', '$stateParams'];
+  exercise: Object;
+  constructor(
+    public Exercises: Services.IExerciseService,
+    public $stateParams: IStateParams
+  ) {
+    this.exercise = Exercises.get($stateParams.exerciseId);
+  }
+}
+
 class SettingsCtrl {
   settings: Object;
   constructor(public Settings: Services.IUserSettings) {
@@ -53,9 +78,13 @@ class SettingsCtrl {
   }
 }
 
+var fn = new function () { };
+
+
 angular.module('starter.controllers', [])
   .controller('DashCtrl', DashCtrl)
   .controller('WeightsCtrl', WeightsCtrl)
   .controller('WeightDetailCtrl', WeightDetailCtrl)
-    .controller('ExercisesCtrl', ExercisesCtrl)
+  .controller('ExercisesCtrl', ['$scope', 'Settings', function($scope, Settings) {}])
+  .controller('ExerciseDetailCtrl', ExerciseDetailCtrl)
   .controller('SettingsCtrl', SettingsCtrl);
